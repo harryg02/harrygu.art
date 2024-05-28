@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import intro1 from '../assets/intro-1.webm';
 import intro2 from '../assets/intro-2.webm';
 import intro3 from '../assets/intro-3.webm';
