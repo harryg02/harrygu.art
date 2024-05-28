@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import intro1 from '../assets/intro-1.webm';
 import intro2 from '../assets/intro-2.webm';
 import intro3 from '../assets/intro-3.webm';
@@ -8,7 +8,6 @@ import hero3 from '../assets/hero3.png';
 import '../styles/Hero.css';
 
 function Hero() {
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const imageOverlays = [
@@ -21,36 +20,34 @@ function Hero() {
       document.getElementById('myVideo2'),
       document.getElementById('myVideo3'),
     ];
-
+    let currentIndex = 0; // Local variable instead of state
+  
     const changeBackgroundImage = () => {
-      setCurrentIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % imageOverlays.length;
-
-        // Show the next image and video
-        if (imageOverlays[nextIndex]) imageOverlays[nextIndex].style.display = 'block';
-        if (videoOverlays[nextIndex]) videoOverlays[nextIndex].style.display = 'block';
-
-        // After showing the last image, reset all back to the first image
-        if (nextIndex === imageOverlays.length - 1) {
-          setTimeout(() => {
-            imageOverlays.forEach((overlay, index) => {
-              if (overlay) overlay.style.display = index === 0 ? 'block' : 'none';
-            });
-            videoOverlays.forEach((overlay, index) => {
-              if (overlay) overlay.style.display = index === 0 ? 'block' : 'none';
-            });
-            setCurrentIndex(0);
-          }, 3000); // Reset after the last image has been displayed for 3 seconds
-        }
-
-        return nextIndex;
-      });
+      currentIndex = (currentIndex + 1) % imageOverlays.length;
+  
+      // Show the next image and video
+      imageOverlays[currentIndex]?.style.setProperty('display', 'block');
+      videoOverlays[currentIndex]?.style.setProperty('display', 'block');
+  
+      // After showing the last image, reset all back to the first image
+      if (currentIndex === imageOverlays.length - 1) {
+        setTimeout(() => {
+          imageOverlays.forEach((overlay, index) => {
+            overlay?.style.setProperty('display', index === 0 ? 'block' : 'none');
+          });
+          videoOverlays.forEach((overlay, index) => {
+            overlay?.style.setProperty('display', index === 0 ? 'block' : 'none');
+          });
+          currentIndex = 0;
+        }, 3000); // Reset after the last image has been displayed for 3 seconds
+      }
     };
-
+  
     const intervalId = setInterval(changeBackgroundImage, 3000);
-
+  
     return () => clearInterval(intervalId);
   }, []);
+  
 
 
   useEffect(() => {
